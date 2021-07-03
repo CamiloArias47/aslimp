@@ -1,0 +1,26 @@
+<div id="menu-main" >
+    <div class="menu-main-list-container">
+        <a href="{{ .Site.Home.RelPermalink }}" class="menu-mobile-logo f2 fw2 no-underline white-90 ">
+            {{ with .Site.Params.site_logo }}
+              {{ $logoImage := (trim . "/") | absURL }}
+              <img src="{{ $logoImage }}" class="w100 mw5-ns" alt="{{ $.Site.Title }}" width="100%" height="100%"/>
+            {{ else }}
+              {{ .Site.Title }}
+            {{ end }}
+          </a>
+        {{ if .Site.Menus.main }}
+          <ul class="pl3 list-menu">
+            {{ range .Site.Menus.main }}
+            <li class="list f3 fw4 pb3">
+              <a class="hover-white no-underline white-90" href="{{ .URL }}" title="{{ .Name }} page">
+                {{ .Name }}
+              </a>
+            </li>
+            {{ end }}
+          </ul>
+        {{ end }}
+        <div class="social-menu-container">
+            {{ partialCached "social-follow.html" . }}
+        </div>
+    </div>
+  </div>

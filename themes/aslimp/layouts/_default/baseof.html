@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    {{/* NOTE: the Site's title, and if there is a page title, that is set too */}}
+    <title>{{ block "title" . }}{{ with .Params.Title }}{{ . }} | {{ end }}{{ .Site.Title }}{{ end }}</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{if .IsPage}}{{ .Summary }}{{ else }}{{ with .Site.Params.description }}{{ . }}{{ end }}{{ end }}{{ end }}">
+    {{ hugo.Generator }}
+    {{/* NOTE: For Production make sure you add `HUGO_ENV="production"` before your build command */}}
+    {{ if eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production")  }}
+      <META NAME="ROBOTS" CONTENT="INDEX, FOLLOW">
+    {{ else }}
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    {{ end }}
+
+    {{/* partial "site-style.html" . */}}
+
+    {{ block "favicon" . }}
+      {{ partialCached "site-favicon.html" . }}
+    {{ end }}
+
+    {{ if .OutputFormats.Get "RSS" }}
+    {{ with .OutputFormats.Get "RSS" }}
+      <link href="{{ .RelPermalink }}" rel="alternate" type="application/rss+xml" title="{{ $.Site.Title }}" />
+      <link href="{{ .RelPermalink }}" rel="feed" type="application/rss+xml" title="{{ $.Site.Title }}" />
+      {{ end }}
+    {{ end }}
+    
+    {{/* NOTE: These Hugo Internal Templates can be found starting at https://github.com/gohugoio/hugo/tree/master/tpl/tplimpl/embedded/templates */}}
+    {{- template "_internal/opengraph.html" . -}}
+    {{- template "_internal/schema.html" . -}}
+    {{- template "_internal/twitter_cards.html" . -}}
+
+    {{ if eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production")  }}
+      {{ template "_internal/google_analytics_async.html" . }}
+    {{ end }}
+	{{ block "head" . }}{{ partial "head-additions.html" . }}{{ end }}
+  {{ block "critical-css" .}} {{end}}
+  </head>
+
+  <body class="ma0 {{ $.Param 'body_classes'  | default 'avenir bg-near-white'}}{{ with getenv 'HUGO_ENV' }} {{ . }}{{ end }}">
+   
+    {{ block "header" . }}{{ partial "site-header.html" .}}{{ end }}
+    
+    <main class="pb7 main-content" role="main">
+      {{ block "main" . }}{{ end }}
+    </main>
+    
+    {{ block "footer" . }}{{ partialCached "site-footer.html" . }}{{ end }}
+    
+    {{ partial "site-menumain.html" .}}
+
+    {{ block "whatsapp" .}} 
+      <a href="https://wa.me/+56962028541" target="_blank" class="btn-whatsapp" rel="noopener">
+        <img src="https://rawcdn.githack.com/rafaelbotazini/floating-whatsapp/3d18b26d5c7d430a1ab0b664f8ca6b69014aed68/whatsapp.svg" alt="whatsapp logo" width="100%" height="100%"/>
+      </a>
+    {{ end }}
+    
+    {{ range .Site.Params.custom_js -}}
+      <script defer src="{{ . | absURL }}"></script>
+    {{- end }}
+
+    {{ block "scripts" .}}
+      <script>
+        var body = document.body,
+            head = document.getElementsByTagName('head'),
+            el=window,
+            btnSandwich = document.getElementById("btn-sandwich"),
+            menuMain = document.getElementById("menu-main"),
+            listMenu = document.getElementsByClassName("menu-main-list-container")[0],
+            navbar = document.querySelector('.navbar')
+            mainContent = document.querySelector('.main-content')
+            onTouch = false;
+
+        function loadCss(route){
+          var linkTag = document.createElement("link")
+          linkTag.href = route
+          linkTag.rel = "stylesheet"
+          head[0].appendChild(linkTag);
+        }
+
+        function toggleSanswich(event){
+            console.log(event.target) 
+            btnSandwich.classList.toggle("change")
+            menuMain.classList.toggle("open")
+            body.classList.toggle("no-scroll")
+            listMenu.classList.toggle("open") 
+        }
+
+        function closeMenu(event){
+            if(event.target == menuMain){
+                btnSandwich.classList.toggle("change")
+                menuMain.classList.toggle("open")
+                listMenu.classList.toggle("open")
+                body.classList.toggle("no-scroll")
+            }
+        }
+
+
+        function onScrollEventHandler(ev) {
+            let bottom = navbar.getBoundingClientRect().bottom
+            let top = mainContent.getBoundingClientRect().top
+
+            // we set
+            if (bottom >= top && !onTouch) {
+                navbar.classList.add("colored")
+                onTouch = true
+            }
+            // we reset
+            if (bottom < top && onTouch) {
+                navbar.classList.remove("colored")
+                onTouch = false
+            }
+        } 
+
+
+        if(el.addEventListener)
+            el.addEventListener('scroll', onScrollEventHandler, false) 
+        else if (el.attachEvent)
+            el.attachEvent('onscroll', onScrollEventHandler)
+
+        btnSandwich.onclick = toggleSanswich
+        menuMain.onclick = closeMenu
+
+        document.addEventListener("DOMContentLoaded", event => {
+          {{ with resources.GetMatch "/aslimp/dist/main.*.css" }}
+            loadCss('{{ .RelPermalink }}')
+          {{ end }}
+
+          {{ range .Site.Params.custom_css }}
+            loadCss('{{ relURL (.) }}')
+          {{ end }}
+        });
+
+      </script>
+    {{ end }}
+
+  </body>
+</html>

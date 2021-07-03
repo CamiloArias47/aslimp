@@ -1,0 +1,28 @@
+{{ $featured_image := partial "func/GetFeaturedImage.html" . }}
+
+{{ if $featured_image }}
+    <style>
+        header{
+            background-image: url('{{ $featured_image }}-D43y-header-small.jpg');
+        }
+
+        @media screen and (max-width:650px) {
+            header{
+                background-image: url('{{ $featured_image }}-D43y-header-medium.jpg');
+            }
+        }
+
+        @media screen and (max-width:959px) {
+            header{
+                background-image: url('{{ $featured_image }}-D43y-header-big.jpg');
+            }
+        }
+
+        @media screen and (min-width:960px) {
+            header{
+                background-image: url('{{ $featured_image }}-D43y-header-xl.jpg');
+            }
+        }
+
+    </style>
+{{ end }}

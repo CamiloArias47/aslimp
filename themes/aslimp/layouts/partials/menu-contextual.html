@@ -1,0 +1,58 @@
+{{/*
+  Use Hugo's native Table of contents feature. You must set `toc: true` in your parameters for this to show.
+  https://gohugo.io/content-management/toc/
+*/}}
+
+{{- if .Params.toc -}}
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">{{ i18n "whatsInThis" . }}</p>
+      {{ .TableOfContents }}
+  </div>
+{{- end -}}
+
+{{/*
+  Use Hugo's native related content feature to pull in content that may have similar parameters, like tags. etc.
+  https://gohugo.io/content-management/related/
+*/}}
+
+{{ $related := .Site.RegularPages.Related . | first 15 }}
+
+{{ with $related }}
+<div class=" nested-list-reset nested-copy-line-height nested-links related-container">
+  <p class="f5 b mb3 product-related-mainTitle">Otros productos que te pueden interesar</p>
+      {{ range . }}
+        {{ $featured_image := partial "func/GetFeaturedImage.html" . }}
+        {{ $featured_image := (trim $featured_image "/") | absURL }}
+	      <div class="mb2 related-container-card">
+          <a href="{{ .RelPermalink }}" class="link product-related animate-card">
+            <picture> 
+              <source 
+                  media="(max-width:400px)"
+                  srcset="{{ $featured_image }}-D43y-thumbxs.jpg 1x,
+                          {{ $featured_image }}-D43y-thumbSmall.jpg 2x"> 
+              <source 
+                  media="(max-width:779px)"
+                  srcset="{{ $featured_image }}-D43y-thumbSmall.jpg 1x,
+                          {{ $featured_image }}-D43y-small.jpg 2x">
+              <source 
+                  media="(min-width:780px)"
+                  srcset="{{ $featured_image }}-D43y-small.jpg">
+              <img src="{{ $featured_image }}" alt="{{ .Title }}" class="img" loading="lazy"/>
+            </picture>
+            <div class="product-related-datails">
+              <div class="product-related-datails-title">
+                  {{- .Title -}}
+              </div>
+              <div class="product-related-datails-summary">
+                {{ .Summary }}
+              </div>
+              <div class="product-related-datails-summary">
+                {{ .Params.price }}
+              </div>
+            </div>
+          </a>
+        </div>
+	    {{ end }}
+  </div>
+  
+{{ end }}

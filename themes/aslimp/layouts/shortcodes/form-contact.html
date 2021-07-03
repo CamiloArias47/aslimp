@@ -1,0 +1,45 @@
+{{ $.Scratch.Add "labelClasses" "f6 b db mb1 mt3 sans-serif mid-gray" }}
+{{ $.Scratch.Add "inputClasses" "w-100 f5 pv3 ph3 bg-light-gray bn" }}
+
+<form id="contact-form" class="black-80 sans-serif" accept-charset="UTF-8" action="{{ .Get "action" }}" method="POST" role="form">
+
+    <label class="{{ $.Scratch.Get "labelClasses" }}"  for="name">{{ i18n "yourName" }}</label>
+    <input type="text" id="name" name="name" class="{{ $.Scratch.Get "inputClasses" }}"  required placeholder=""  aria-labelledby="name"/>
+
+    <label class="{{ $.Scratch.Get "labelClasses" }}" for="email">{{ i18n "emailAddress" }}*</label>
+    <input type="email" id="email" name="email" class="{{ $.Scratch.Get "inputClasses" }}"  required placeholder=" "  aria-labelledby="email"/>
+    <div class="requirements f6 gray glow i ph3 overflow-hidden"></div>
+
+    <label class="{{ $.Scratch.Get "labelClasses" }}" for="message">{{ i18n "message" }}</label>
+    <textarea id="message" name="message" class="{{ $.Scratch.Get "inputClasses" }} h4" required aria-labelledby="message"></textarea>
+
+    <div id="contact-form-status">
+
+    </diV>
+
+    <input class="db w-100 mv2 white pa3 bn hover-shadow bg-green link dim pointer" type="submit" value="{{ i18n "send" }}" />
+
+</form>
+
+<script>
+     var form = document.getElementById("contact-form");
+    
+    async function handleSubmit(event) {
+      event.preventDefault();
+      var status = document.getElementById("contact-form-status");
+      var data = new FormData(event.target);
+      fetch(event.target.action, {
+        method: form.method,
+        body: data,
+        headers: {
+            'Accept': 'application/json'
+        }
+      }).then(response => {
+        status.innerHTML = "Gracias por tu mensaje, te responderemos pronto!";
+        form.reset()
+      }).catch(error => {
+        status.innerHTML = "Lo sentimos no pudimos procesar tu emnsaje, intenta más tarde."
+      });
+    }
+    form.addEventListener("submit", handleSubmit)
+</script>

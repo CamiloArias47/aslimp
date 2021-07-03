@@ -1,0 +1,118 @@
+{{ define "critical-css"}}
+  <style data-where="single-page">
+    html{line-height:1.15;-webkit-text-size-adjust:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Open Sans','Helvetica Neue',sans-serif}body{margin:0}h1{font-size:2em;margin:.67em 0}a{background-color:transparent}img{border-style:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}a,body,div,h1,html,li,main,nav,p,section,ul{box-sizing:border-box}img{max-width:100%}.dn{display:none}.dib{display:inline-block}.avenir{font-family:avenir next,avenir,sans-serif}.fw2{font-weight:200}.fw4{font-weight:400}.link{text-decoration:none}.list{list-style-type:none}.mw8{max-width:1024px;max-width:64rem}@media screen and (min-width:30em){.mw5-ns{max-width:16rem}}@media screen and (min-width:60em){.w-70-l{width:70%}}.white-90{color:rgba(255,255,255,.9)}.white-70{color:rgba(255,255,255,.7)}.bg-near-white{background-color:#f4f4f4}.pl0{padding-left:0}.pl3{padding-left:16px;padding-left:1rem}.pr3{padding-right:16px;padding-right:1rem}.pb3{padding-bottom:16px;padding-bottom:1rem}.pb7{padding-bottom:256px;padding-bottom:16rem}.pt3{padding-top:16px;padding-top:1rem}.pv2{padding-top:8px;padding-top:.5rem;padding-bottom:8px;padding-bottom:.5rem}.pv3{padding-top:16px;padding-top:1rem;padding-bottom:16px;padding-bottom:1rem}.ph3{padding-left:16px;padding-left:1rem;padding-right:16px;padding-right:1rem}.ma0{margin:0}.mr1{margin-right:4px;margin-right:.25rem}.mr3{margin-right:16px;margin-right:1rem}.no-underline{text-decoration:none}@media screen and (min-width:30em){.pa4-ns{padding:2rem}.ph4-ns{padding-left:2rem;padding-right:2rem}}@media screen and (min-width:60em){.pt0-l{padding-top:0}}.no-underline{text-decoration:none}.f2{font-size:36px;font-size:2.25rem}.f3{font-size:24px;font-size:1.5rem}.f4{font-size:20px;font-size:1.25rem}.f5{font-size:16px;font-size:1rem}@media screen and (min-width:30em){.f4-ns{font-size:1.25rem}}.center{margin-right:auto;margin-left:auto}.dim{opacity:1}.z-999{z-index:999}.facebook,.instagram{fill:#bababa}.new-window{opacity:0;display:inline-block;vertical-align:top}body,html{padding:0;margin:0}.nav-container{display:flex;flex-flow:wrap;justify-content:space-between;align-items:center}.nav-desktop-menu{display:none}.navbar{position:fixed;width:100%;z-index:989;background-color:transparent}.nav-product>.navbar{-webkit-box-shadow:0 0 7px 0 #000;box-shadow:0 0 7px 0 #000;background-color:#f1f1f1}.navbar-btn{display:inline-block}.bar1,.bar2,.bar3{width:35px;height:5px;background-color:#fff;margin:6px 0}.navbar .navbar-item-a{color:rgba(255,255,255,.9)}#menu-main{visibility:hidden;position:fixed;z-index:1000;top:0;bottom:0;width:100%;background:#ffffffaa;backdrop-filter:blur(3px)}.menu-main-list-container{position:absolute;display:flex;flex-flow:row wrap;width:250px;top:0;bottom:0;right:-250px;background-color:#262b2d;-webkit-box-shadow:0 0 7px 0 #000;box-shadow:0 0 7px 0 #000}.menu-mobile-logo{align-self:center;margin:auto}.list-menu{display:flex;flex-flow:column wrap}.social-menu-container{display:flex;flex-flow:row wrap;padding:0 1rem}.product-page{padding-top:15vh;display:flex;flex-flow:column nowrap}.product-page .go-back-link{width:100%;padding:1rem 0}.product-page .go-back-link>a{color:#696969;font-size:1rem;font-weight:600}.product-page .product-page-description{color:#696969}.product-page .product-page-description>h1{color:#1a1111}.product-page .product-page-description .product-page-price{font-size:1.3rem;font-weight:600}.btn-whatsapp{width:70px;height:70px;border-radius:50%;position:fixed;z-index:999;bottom:4vh;right:2vh}.btn-whatsapp>img{border-radius:50%}@media screen and (min-width:780px){.nav-desktop-menu{display:flex;align-items:center;flex-flow:row wrap;justify-content:flex-end}.navbar-btn{display:none}.product-page{display:flex;flex-flow:row wrap;justify-content:flex-start;align-items:flex-start}.product-page>picture{width:50%}.product-page>picture>img{min-height:450px;height:auto;object-fit:contain}.product-page .product-page-description{width:50%;padding-left:15px}}
+  </style>
+{{ end }}
+
+{{ define "header" }}
+  {{/* We can override any block in the baseof file be defining it in the template */}}
+  {{ if eq .CurrentSection.Title "Articulos"}}
+      {{ partial "page-header.html" . }}
+  {{ else }}
+      <div class="nav-product">
+        {{ partial "site-navigation.html" . }}
+      </div>
+  {{ end }}
+{{ end }}
+
+{{ define "main" }}
+  {{ $section := .Site.GetPage "section" .Section }}
+  {{ if eq .CurrentSection.Title "Blog"}}
+    <article class="flex-l flex-wrap justify-between mw8 w-70-l center ph3 ">
+      <header class="mt4 w-100">
+        <aside class="instapaper_ignoref b helvetica tracked">
+            {{/*
+            CurrentSection allows us to use the section title instead of inferring from the folder.
+            https://gohugo.io/variables/page/#section-variables-and-methods
+            */}}
+          {{with .CurrentSection.Title }}{{. | upper }}{{end}}
+        </aside>
+        {{ partial "social-share.html" . }}
+        <h1 class="f1 athelas mt3 mb1">
+          {{- .Title -}}
+        </h1>
+        {{ with .Params.author }}
+        <p class="tracked">
+            By <strong>
+            {{ if reflect.IsSlice . }}
+                {{ delimit . ", " | markdownify }}
+            {{else}}
+                {{ . | markdownify }}
+            {{ end }}
+            </strong>
+        </p>
+        {{ end }}
+        {{/* Hugo uses Go's date formatting is set by example. Here are two formats */}}
+        <time class="f6 mv4 dib tracked" {{ printf `datetime="%s"` (.Date.Format "2006-01-02T15:04:05Z07:00") | safeHTMLAttr }}>
+          {{- .Date.Format "January 2, 2006" -}}
+        </time>
+
+        {{/*
+            Show "reading time" and "word count" but only if one of the following are true:
+            1) A global config `params` value is set `show_reading_time = true`
+            2) A section front matter value is set `show_reading_time = true`
+            3) A page front matter value is set `show_reading_time = true`
+          */}}
+        {{ if (or (eq (.Param "show_reading_time") true) (eq $section.Params.show_reading_time true) )}}
+          <span class="f6 mv4 dib tracked"> - {{ .ReadingTime}} minutes read</span>
+          <span class="f6 mv4 dib tracked"> - {{ .WordCount}} words</span>
+        {{ end }}
+      </header>
+      <div class="nested-copy-line-height lh-copy {{ $.Param "post_content_classes"  | default "serif"}} f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l">
+        {{- .Content -}}
+        {{- partial "tags.html" . -}}
+        <div class="mt6 instapaper_ignoref">
+        {{ if .Site.DisqusShortname }}
+          {{ template "_internal/disqus.html" . }}
+        {{ end }}
+        {{ if .Site.Params.commentoEnable }}
+          {{- partial "commento.html" . -}}
+        {{ end }}
+        </div>
+      </div>
+
+      <aside class="w-30-l mt6-l">
+        {{- partial "menu-contextual.html" . -}}
+      </aside>
+
+    </article>
+  {{ else }}
+    {{ $featured_image := partial "func/GetFeaturedImage.html" . }}
+    {{ $featured_image := (trim $featured_image "/") | absURL }}
+    <section class=" mw8 w-70-l pa4-ns center ph3 product-page">
+      <div class="go-back-link">
+        <a href="{{ .CurrentSection.Permalink }}" class="link dim">
+          {{ .CurrentSection.Title }} /
+        </a>
+      </div>
+      <picture>
+        <source 
+            media="(max-width:400px)"
+            srcset="{{ $featured_image }}-D43y-small.jpg 1x,
+                    {{ $featured_image }}-D43y-medium+.jpg 2x"/>
+        <source 
+            media="(max-width:779px)"
+            srcset="{{ $featured_image }}-D43y-medium+.jpg"/>
+        <source 
+            media="(min-width:780px)"
+            srcset="{{ $featured_image }}-D43y-medium.jpg 1x,
+                    {{ $featured_image }}-D43y-medium+.jpg 2x"/>
+
+        <img src="{{ $featured_image }}" alt="{{ .Title }}" width="100%" height="311"/>
+      </picture>
+      <div class="product-page-description"> 
+        <h1>{{ .Title }}</h1>
+        <p class="product-page-price">{{ .Params.price }}</p>
+        <p>
+          {{- .Content -}}
+        </p>
+      </div>
+      {{- partial "menu-contextual.html" . -}}
+    </section>
+
+  {{ end }}
+{{ end }}
+
+{{ define "scripts" }}
+  
+{{- end }}

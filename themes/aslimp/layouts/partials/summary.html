@@ -1,0 +1,13 @@
+
+  <a href="{{ .Permalink }}" class="link">
+    <img src="{{ .Params.featured_image }}" class="img product-image" alt="Imagen del producto {{ .Title }}">
+    <div class="product-description">
+      <h2 class="near-black">
+          {{ .Title }}
+      </h2>
+      <div class="nested-links f5 lh-copy product-price">
+        {{ .Params.price  }}
+      </div>
+    </div>
+  </a>
+

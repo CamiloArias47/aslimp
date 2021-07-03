@@ -1,0 +1,29 @@
+{{ $featured_image := partial "func/GetFeaturedImage.html" . }}
+
+  {{ if $featured_image }}
+    {{/* Trimming the slash and adding absURL make sure the image works no matter where our site lives */}}
+    {{ $featured_image := (trim $featured_image "/") | absURL }}
+  
+    <a href="{{.Permalink}}" class="">
+      <picture>
+        <source media="(max-width:400px)"
+                srcset="{{ $featured_image }}-D43y-scroll.jpg"/>
+        <source media="(max-width:959px)"
+                srcset="{{ $featured_image }}-D43y-mscroll.jpg"/>
+        <source media="(min-width:960px)"
+                srcset="{{ $featured_image }}-D43y-bscroll.jpg 1x,
+                        {{ $featured_image }}-D43y-xlscroll.jpg 2x" />
+        <img src="{{ $featured_image }}" class="img img-slider" alt="Imagen del producto {{ .Title }}">
+      </picture>
+    </a>
+   
+  {{ end }}
+  <div class="slider-nameProduct">
+    <h1 class="f3 fw1 lh-title">
+      <a href="{{.Permalink}}" class="color-inherit dim link">
+        {{ .Title }}
+        </a>
+    </h1>
+  </div>
+
+
