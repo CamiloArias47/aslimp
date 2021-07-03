@@ -1,0 +1,20 @@
+{
+  "name": "aslimp",
+  "version": "1.0.0",
+  "description": "tienda de productos de aseo Iquique, Chile.",
+  "main": "pre/index.js",
+  "scripts": {
+    "crop": "node pre/index.js",
+    "critical-mobile": "node pre/critical.js home mobile && node pre/critical.js category mobile && node pre/critical.js product mobile",
+    "critical-desktop": "node pre/critical.js home desktop && node pre/critical.js category desktop && node pre/critical.js product desktop"
+  },
+  "author": "camiloArias47",
+  "license": "ISC",
+  "dependencies": {
+    
+  },
+  "devDependencies": {
+    "critical": "^4.0.0",
+    "sharp": "^0.28.3"
+  }
+}
