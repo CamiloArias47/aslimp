@@ -1,5 +1,5 @@
 title = "Aslimp"
-baseURL = "https://aslimp.com"
+baseURL = "https://aslimp.vercel.app"
 languageCode = "es"
 theme = "aslimp"
 resourceDir = "../resources"
@@ -16,7 +16,7 @@ enableRobotsTXT = true
   filename = "sitemap.xml"
 
 [params]
-  env = "dev"
+  env = "prod"
   favicon = "images/aslimp.jpg"
   site_logo = "images/logos/Aslimp.png"
   description = "Productos de aseo y limpieza."
