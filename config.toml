@@ -1,5 +1,5 @@
 title = "Aslimp"
-baseURL = "https://aslimp.vercel.app"
+baseURL = "https://www.aslimpspa.cl"
 languageCode = "es"
 theme = "aslimp"
 resourceDir = "../resources"
